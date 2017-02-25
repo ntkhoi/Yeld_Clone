@@ -20,8 +20,10 @@ class SwitchCell: UITableViewCell {
         super.awakeFromNib()
         
     }
-    @IBOutlet weak var catergoryLable: UILabel!
+    
     @IBOutlet weak var switchButton: UISwitch!
+    @IBOutlet weak var settingFieldLable: UILabel!
+    @IBOutlet weak var pickButton: UIButton!
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

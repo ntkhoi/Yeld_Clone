@@ -12,12 +12,17 @@ class BusinessesViewController: UIViewController {
 
     var businesses: [Business]!
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -28,8 +33,10 @@ class BusinessesViewController: UIViewController {
                 
             }
         }
-      
     }
+    
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let naVC = segue.destination as! UINavigationController
         let filterVC = naVC.topViewController as! FiltersViewController
@@ -37,7 +44,7 @@ class BusinessesViewController: UIViewController {
     }
 }
 
-extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource , FiltersViewControllerDelegate {
+extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource , FiltersViewControllerDelegate, UISearchBarDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if businesses == nil{
@@ -55,12 +62,35 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
         
     }
     
-    func filtersVewController(filterVC: FiltersViewController, didupdateFilters filters: [String]) {
-        Business.search(with: "", sort: nil, categories: filters, deals: nil ) { (business: [Business]?, error: Error?) in
+    func filtersVewController(filterVC: FiltersViewController, didupdateFilters filters: [String],isOfferADeal: Bool ) {
+        Business.search(with: "", sort: nil, categories: filters, deals: isOfferADeal ) { (business:
+            [Business]?, error: Error?) in
+            
+            print("Is offer the deal \(isOfferADeal)")
             if let business = business{
                 self.businesses = business
                 self.tableView.reloadData()
             }
         }
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        var filter = [String]()
+        filter.append(searchBar.text!)
+        
+        Business.search(with: searchBar.text! ){(business: [Business]?,error: Error?) in
+            if let business = business{
+                self.businesses.removeAll()
+                self.businesses = business
+                self.tableView.reloadData()
+            }
+            searchBar.resignFirstResponder()
+            
+        }
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    
+        self.searchBar.endEditing(true)
+    }
+    
 }
