@@ -313,7 +313,7 @@ extension FiltersViewController: UITableViewDelegate , UITableViewDataSource {
             break;
         case .Category:
             if !isShowedAllCategory && indexPath.row == 2 {
-                var cellShowall = tableView.dequeueReusableCell(withIdentifier: "seeallCell") as! SeeallCell
+                let cellShowall = tableView.dequeueReusableCell(withIdentifier: "seeallCell") as! SeeallCell
                 
                 cellShowall.delegate = self
                 return cellShowall
@@ -407,8 +407,6 @@ extension FiltersViewController: SwitchCellDelegate , FiltersCellDelegate , Seea
                 return 3
             }
             return categories.count
-        default:
-            break
         }
     }
     

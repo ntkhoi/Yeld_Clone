@@ -15,12 +15,13 @@ class BusinessesViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var noresultWarningLable: UILabel!
     
     let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        noresultWarningLable.isHidden = true
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
@@ -41,6 +42,13 @@ class BusinessesViewController: UIViewController {
             if let businesses = businesses {
                 self.businesses = businesses
                 self.tableView.reloadData()
+                self.noResultDisplayMessage(isshowNoResultMessageShow: false)
+                
+                if businesses.count == 0 {
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: true)
+                }else{
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: false)
+                }
             }
             self.refreshControl.endRefreshing()
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -78,11 +86,16 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
         Business.search(with: "", sort: sortMode, categories: filters, deals: isOfferADeal, distance: distance ) { (business:
             [Business]?, error: Error?) in
             
-            print("Is offer the deal \(isOfferADeal)")
             if let business = business{
                 self.businesses = business
                 self.tableView.reloadData()
+                if business.count == 0{
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: true)
+                }else{
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: false)
+                }
             }
+            
             MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
@@ -96,7 +109,13 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
                 self.businesses.removeAll()
                 self.businesses = business
                 self.tableView.reloadData()
+                if business.count == 0 {
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: true)
+                }else{
+                    self.noResultDisplayMessage(isshowNoResultMessageShow: false)
+                }
             }
+            
             searchBar.resignFirstResponder()
             MBProgressHUD.hide(for: self.view, animated: true)
             
@@ -105,5 +124,10 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     
         self.searchBar.endEditing(true)
+    }
+    fileprivate func noResultDisplayMessage(isshowNoResultMessageShow: Bool){
+        self.noresultWarningLable.isHidden = !isshowNoResultMessageShow
+        self.tableView.isHidden = isshowNoResultMessageShow
+    
     }
 }

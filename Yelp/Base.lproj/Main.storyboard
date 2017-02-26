@@ -22,6 +22,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="no result found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaO-CK-gu5">
+                                <rect key="frame" x="0.0" y="262" width="320" height="44"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MJq-gc-JCk">
                                 <rect key="frame" x="0.0" y="262" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -120,7 +126,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="eaO-CK-gu5" firstAttribute="centerY" secondItem="CiP-nn-BEy" secondAttribute="centerY" id="DKg-hE-Fk3"/>
                             <constraint firstItem="CiP-nn-BEy" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="DOj-TP-oug"/>
+                            <constraint firstItem="eaO-CK-gu5" firstAttribute="centerX" secondItem="CiP-nn-BEy" secondAttribute="centerX" id="N1G-6v-o4z"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CiP-nn-BEy" secondAttribute="bottom" id="fHd-G2-mcz"/>
                             <constraint firstAttribute="trailing" secondItem="CiP-nn-BEy" secondAttribute="trailing" id="gsf-zM-dc0"/>
                             <constraint firstItem="CiP-nn-BEy" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ooo-Cb-Oxx"/>
@@ -134,6 +142,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="noresultWarningLable" destination="eaO-CK-gu5" id="sJ2-d3-e8d"/>
                         <outlet property="searchBar" destination="MJq-gc-JCk" id="YYA-AR-mOl"/>
                         <outlet property="tableView" destination="CiP-nn-BEy" id="PEv-LP-kgu"/>
                     </connections>
