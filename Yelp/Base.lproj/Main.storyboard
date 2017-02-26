@@ -298,7 +298,7 @@
                                 <action selector="onCancle:" destination="a4O-kX-S2d" id="VMx-JR-PCP"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="ZwQ-Ko-fUq">
+                        <barButtonItem key="rightBarButtonItem" title="Search" id="ZwQ-Ko-fUq">
                             <connections>
                                 <action selector="onSave:" destination="a4O-kX-S2d" id="KSh-Pq-xCe"/>
                             </connections>
