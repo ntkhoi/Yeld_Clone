@@ -7,13 +7,16 @@
 //
 
 import UIKit
-
+import MBProgressHUD
 class BusinessesViewController: UIViewController {
 
     var businesses: [Business]!
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    
+    
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +26,26 @@ class BusinessesViewController: UIViewController {
         searchBar.delegate = self
         navigationItem.titleView = searchBar
         
+        refreshControl.addTarget(self, action: #selector(self.fetchData), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
+        fetchData()
         
+        }
+    
+    func fetchData(){
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         Business.search(with: "Thai") { (businesses: [Business]?, error: Error?) in
             if let businesses = businesses {
                 self.businesses = businesses
                 self.tableView.reloadData()
-                
             }
+            self.refreshControl.endRefreshing()
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
-    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,8 +73,9 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
         
     }
     
-    func filtersVewController(filterVC: FiltersViewController, didupdateFilters filters: [String],isOfferADeal: Bool ) {
-        Business.search(with: "", sort: nil, categories: filters, deals: isOfferADeal ) { (business:
+    func filtersVewController(filterVC: FiltersViewController, didupdateFilters filters: [String],isOfferADeal: Bool , sortMode: YelpSortMode, distance: Double?){
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        Business.search(with: "", sort: sortMode, categories: filters, deals: isOfferADeal, distance: distance ) { (business:
             [Business]?, error: Error?) in
             
             print("Is offer the deal \(isOfferADeal)")
@@ -71,13 +83,14 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
                 self.businesses = business
                 self.tableView.reloadData()
             }
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         var filter = [String]()
         filter.append(searchBar.text!)
-        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         Business.search(with: searchBar.text! ){(business: [Business]?,error: Error?) in
             if let business = business{
                 self.businesses.removeAll()
@@ -85,6 +98,7 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
                 self.tableView.reloadData()
             }
             searchBar.resignFirstResponder()
+            MBProgressHUD.hide(for: self.view, animated: true)
             
         }
     }
@@ -92,5 +106,4 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource ,
     
         self.searchBar.endEditing(true)
     }
-    
 }

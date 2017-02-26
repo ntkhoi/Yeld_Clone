@@ -28,7 +28,10 @@ class BusinessCell: UITableViewCell {
             reviewcountLable.text = String(describing: business.reviewCount)
             addressLable.text = business.address
             categorylable.text = business.categories
-            restauranceImage.setImageWith(business.imageURL!)
+            
+            if let imageurl = business.imageURL{
+            restauranceImage.setImageWith(imageurl)
+            }
             ratingImage.setImageWith(business.ratingImageURL!)
             }
     }

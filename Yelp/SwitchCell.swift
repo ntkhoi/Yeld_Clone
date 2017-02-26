@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SwitchCellDelegate {
+ protocol SwitchCellDelegate {
     func switchCell(switchCell: SwitchCell , didChangeValue value: Bool)
 }
 
@@ -23,15 +23,21 @@ class SwitchCell: UITableViewCell {
     
     @IBOutlet weak var switchButton: UISwitch!
     @IBOutlet weak var settingFieldLable: UILabel!
-    @IBOutlet weak var pickButton: UIButton!
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
     }
 
+    @IBAction func onShowPicker(_ sender: UIButton) {
+        
+        print("onShowPicker")
+        
+    }
     @IBAction func onSwitch(_ sender: UISwitch) {
         print("On switch change")
         delegate.switchCell(switchCell: self, didChangeValue: sender.isOn)
+        
     }
 }
